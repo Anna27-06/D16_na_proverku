@@ -1,0 +1,49 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+
+<h1>Отклики к посту</h1>
+<!--<br><br>-->
+
+<!--   <form action="" method="get">-->
+<!--       {{ userresponsefilterset.form.as_p }}-->
+<!--       <input type="submit" value="Найти" />-->
+<!--   </form>-->
+
+{% if post_detail %}
+      <table>
+          <tr>
+              <td> Заголовок</td>
+              <td> Дата публикации</td>
+              <td> Текст статьи/новости</td>
+          </tr>
+          {{ post_detail }}
+            <tr>
+               <h3><td>{{ post_detail.title }}</td>
+               <td>{{ post_detail.dateCreation|date:'d M Y' }}</td>
+               <td>{{ post_detail.text|safe }}</td></h3>
+            </tr>
+
+      </table>
+{% endif %}
+
+
+
+    {% if response %}
+        {% for response in userresponse %}
+             <h3>Отклики на это объявление:</h3>
+            <a><b>Объявление:</b></a>
+            <a href="/posts/{{userresponse.post_id }}" style="font-size: 20px;"><b>{{ userresponse.post.title }}</b></a><br>
+            <span style="font-size: 12px;"><b>Автор поста:  {{ userresponse.post.author.username }} |
+                дата публикации: {{ userresponse.post.dateCreation|date:'d.M.Y' }} г.</b></span><br>
+            <a><b>Содержание отклика:</b></a>
+            {{userresponse.text }}<br>
+            <span style="font-size: 12px;"><b>Дата публикации отклика: {{ userresponse.resp_date|date:'d.M.Y' }} г.|Автор отклика:  {{ userresponse.author.username }}</b></span><br><br>
+        {% endfor %}
+    {% else %}
+        <br><br>
+        <h2>Откликов пока нет!</h2>
+    {% endif %}
+
+
+{% endblock content %}

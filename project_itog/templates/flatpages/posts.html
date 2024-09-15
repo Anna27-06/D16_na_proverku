@@ -1,0 +1,68 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+App posts
+{% endblock title %}
+
+
+{% block content %}
+<h1>Все ролевые посты</h1>
+   <form action="" method="get">
+       {# Переменная, которую мы передали через контекст, может сгенерировать нам форму с полями #}
+       {{ filterset.form.as_p }}
+       {# Добавим кнопку отправки данных формы #}
+       <input type="submit" value="Найти" />
+   </form>
+<hr>
+
+    {% if user.is_authenticated %}
+<!--        {% if user == post.author %}-->
+            <a href="{% url 'post_create' %}">Добавить новость</a>
+<!--        {% endif %}-->
+    {%endif%}
+   {{post.text|safe}}
+
+    {% if posts %}
+    <h3> Всего новостей на странице: {{posts|length}}</h3>
+        <hr>
+        <table>
+            <tr>
+                <td> <h3>Заголовок</h3> </td>
+                <td> <h3>Дата публикации</h3> </td>
+                <td> <h3>Содержание...</h3> </td>
+                <td> <h3>Категории...</h3> </td>
+                <td> <h3>Автор...</h3> </td>
+                {% if user.is_authenticated %}
+                    {% if user == post.author %}
+                    <td> <h3>Действия</h3> </td>
+                    {% endif %}
+                {% endif %}
+
+
+
+            </tr>
+            {% for post in posts %}
+            <tr>
+                <td>{{ post.title }}</td>
+                <td>{{ post.dateCreation|date:'d M Y' }}</td>
+                <td>{{ post.text|safe}}</td>
+                <td>{{ post.category }}</td>
+                <td>{{ post.author }}</td>
+                {% if user.is_authenticated %}
+                    {% if user == post.author %}
+                        <td><a href="{% url 'post_edit' pk=post.id %}"><u> <button type="submit" class="btn btn-primary">Редактировать</button> </u></a></td>
+                        <td><a href="{% url 'post_delete' pk=post.pk %}"><u> <button type="submit" class="btn btn-primary">Удалить</button></u></a></td>
+                    {% endif %}
+                {% endif %}
+                <td><a href="{{post.pk}}"> Открыть пост </a></td>
+<!--                <td><a href="{{response}}"> Открыть страницу с откликами </a></td>-->
+            </tr>
+            {% endfor %}
+            </table>
+    {% else %}
+        <h2>Здесь ничего нет</h2>
+    {% endif %}
+    <hr>
+
+{% endblock content %}

@@ -1,0 +1,67 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+Post
+{% endblock title %}
+
+
+{% block content %}
+{% if post_detail %}
+      <table>
+          <tr>
+              <td> Заголовок</td>
+              <td> Дата публикации</td>
+              <td> Текст статьи/новости</td>
+          </tr>
+          {{ post_detail }}
+            <tr>
+               <h3><td>{{ post_detail.title }}</td>
+               <td>{{ post_detail.dateCreation|date:'d M Y' }}</td>
+               <td>{{ post_detail.text|safe }}</td></h3>
+            </tr>
+
+      </table>
+{% endif %}
+    <br>
+
+
+    <br>
+    <td>{% if user.is_authenticated %}
+                {% if user == post.author %}
+                <a href="{% url 'post_edit' pk=post.id %}"><u> <button type="submit" class="btn btn-primary">Редактировать</button> </u></a>
+                <a href="{% url 'post_delete' pk=post.pk %}"><u> <button type="submit" class="btn btn-primary">Удалить</button></u></a>
+                    <!-- ссылка на удаление -->
+                {% else %}
+                 <button><a href="{% url 'userresponse' post_detail.id %}">Добавить отклик</a></button>
+                {% endif %}
+        {% endif %}
+    </td>
+    </br>
+
+<!-- {% if userresponses %}-->
+<!--        <p style="font-size: 26px;" align="left" ><b>Отклики</b></p>-->
+<!--        {% for response in UserResponses %}-->
+<!--            <hr>-->
+<!--                <table>-->
+<!--                    <tr>-->
+<!--                        <td width="200px">-->
+<!--                            {% if userresponse.status == False %}-->
+<!--                                <p align="center"><b>Статус:</b>-->
+<!--                                <br>на рассмотрении</p>-->
+<!--                            {% else %}-->
+<!--                                <p align="center"><b>Статус:</b>-->
+<!--                                <br>принят</p>-->
+<!--                            {% endif %}-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <p align="left"><b>{{ userresponse.author }}</b>:-->
+<!--                            <br>{{ userresponse.text|safe }}</p>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                </table>-->
+<!--            </form>-->
+<!--        {% endfor %}-->
+<!--    {% endif %}-->
+<!--<br>-->
+<!--{% endblock content %}-->

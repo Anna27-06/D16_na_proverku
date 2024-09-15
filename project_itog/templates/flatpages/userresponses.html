@@ -1,0 +1,42 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+
+<h1>Отклики</h1>
+<br><br>
+   <form action="" method="get">
+       {{ userresponsefilterset.form.as_p }}
+       <input type="submit" value="Найти" />
+   </form>
+    {% if userresponses %}
+        {% for userresponse in userresponses %}
+             <h3>Мои отклики на объявления:</h3>
+            <a><b>Объявление:</b></a>
+            <a href="/posts/{{userresponse.post_id }}" style="font-size: 20px;"><b>{{ userresponse.post.title }}</b></a><br>
+            <span style="font-size: 12px;"><b>Автор поста:  {{ userresponse.post.author.username }} |
+                дата публикации: {{ userresponse.post.dateCreation|date:'d.M.Y' }} г.</b></span><br>
+            <a><b>Содержание отклика:</b></a>
+            {{userresponse.text }}<br>
+            <span style="font-size: 12px;"><b>Дата публикации отклика: {{ userresponse.resp_date|date:'d.M.Y' }} г.|Автор отклика:  {{ userresponse.author.username }}</b></span><br><br>
+
+
+
+            <td style="width: 200px"><button type="submit"><a href="{% url 'userresponse_delete' pk=userresponse.pk %}"> Удалить </a></button></td>
+            {% if userresponse.status == False %}
+            <td style="width: 250px"><button type="submit"><a href="{% url 'userresponse_accept' pk=userresponse.pk %}">Принять</a></button> </td>
+            {% else %}
+            <td style="width: 250px">Отклик принят!</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+
+
+    {% else %}
+        <br><br>
+        <h2>Откликов пока нет!</h2>
+    {% endif %}
+
+
+{% endblock content %}
+
+
